@@ -1,5 +1,6 @@
 package document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -30,13 +31,16 @@ public class BasicDocument extends Document
 	 * This method should process the entire text string each time it is called.  
 	 * 
 	 * @return The number of words in the document.
+	 * 자바 정규식 이용 텍스트의 단어수 출력
 	 */
 	@Override
 	public int getNumWords()
 	{
 		//TODO: Implement this method in week 2 according to the comments above.  
 		// See the Module 2 support videos if you need help.
-	    return 0;
+		List<String> words = new ArrayList<>();
+		words = getTokens("[a-zA-Z]+");
+	    return words.size();
 	}
 	
 	/**
@@ -49,6 +53,7 @@ public class BasicDocument extends Document
 	 * 
 	 * This method should process the entire text string each time it is called.  
 	 * 
+	 * 텍스트의 문장수 출력
 	 * @return The number of sentences in the document.
 	 */
 	@Override
@@ -56,7 +61,9 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 2 support videos 
         // if you need help.
-        return 0;
+		List<String> sentences = new ArrayList<>();
+		sentences = getTokens("[^.|!|?]+");
+	    return sentences.size();
 	}
 	
 	/**
@@ -71,6 +78,8 @@ public class BasicDocument extends Document
 	 * 
 	 * This method should process the entire text string each time it is called.  
 	 * 
+	 * 텍스트의 음절수 출력(모음으로 구별, a, e, i, o, u, y)
+	 * Document 클래스의 countSyllables 메소드 사용
 	 * @return The number of syllables in the document.
 	 */
 	@Override
@@ -81,7 +90,14 @@ public class BasicDocument extends Document
 		// expression for the syllable counting.  We recommend you implement 
 		// the helper function countSyllables in Document.java using a loop, 
 		// and then call it here on each word.
-        return 0;
+		int numSyl = 0;
+		List<String> words = new ArrayList<>();
+		words = getTokens("[a-zA-Z]+");
+		for(String w : words) {
+			numSyl+=countSyllables(w);
+		}
+		
+        return numSyl;
 	}
 	
 	

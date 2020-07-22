@@ -55,6 +55,7 @@ public abstract class Document {
 	 * characters in the string and write your own logic for counting 
 	 * syllables.
 	 * 
+	 * 단어를 페러미터로 받고 단어의 모음 숫자를 리턴한다(e로 끝나는 경우는 세지 않는다)
 	 * @param word  The word to count the syllables in
 	 * @return The number of syllables in the given word, according to 
 	 * this rule: Each contiguous sequence of one or more vowels is a syllable, 
@@ -67,7 +68,26 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 2) and 
 	    // EfficientDocument (module 3).
-	    return 0;
+		String lWord = word.toLowerCase();
+		int numSyl = 0;
+		for(int i = 0; i < lWord.length(); i++) {
+			char sWord = lWord.charAt(i);
+			char bWord = ' ';
+			if(i>0) {
+			bWord = lWord.charAt(i-1);
+			}
+			if(i == lWord.length()-1 && lWord.charAt(i) == 'e') {
+				break;
+			} else if(bWord == 'a' || bWord == 'e' || bWord =='o' || bWord =='i' || bWord =='u' || bWord =='y') {
+				continue;
+			} else if(sWord == 'a' || sWord == 'e' || sWord =='o' || sWord =='i' || sWord =='u' || sWord =='y') {
+				numSyl++;
+			} 
+		}
+		if(numSyl == 0) {
+			numSyl = 1;
+		}
+	    return numSyl;
 	}
 	
 	/** A method for testing
