@@ -148,15 +148,16 @@ public abstract class Document {
 	}
 	
 	/** return the Flesch readability score of this document */
-	//Flesh Index를 눌렀을 때 상자의 글자수를 나타낸다
+	//Flesch Index를 눌렀을 때 Flesch score공식에 따라 값을 반환한다
 	public double getFleschScore()
 	{
 	    // TODO: You will play with this method in week 1, and 
 		// then implement it in week 2
-		double numText;
-		numText = text.length();
+		double fleschScore = -1;
+		fleschScore = 206.835 - 1.015*((double)new BasicDocument(text).getNumWords()/new BasicDocument(text).getNumSentences())-84.6*((double)new BasicDocument(text).getNumSyllables()/new BasicDocument(text).getNumWords());
+		//fleschScore = new BasicDocument(text).getNumWords();
 		
-	    return numText;
+	    return fleschScore;
 	}
 	
 	
