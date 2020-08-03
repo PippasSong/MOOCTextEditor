@@ -1,6 +1,7 @@
 package document;
 
 import java.util.List;
+import java.util.*;
 
 /** 
  * A class that represents a text document
@@ -52,6 +53,31 @@ public class EfficientDocument extends Document {
 		// OF THIS METHOD.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
 		
+		for(String list : tokens) {
+			if(isWord(list)) {
+				numWords++;
+			}
+		}
+		
+		for(String list : tokens) {
+			if(!isWord(list)) {
+				numSentences++;
+			}
+		}
+		if(tokens.size()>0&&isWord(tokens.get(tokens.size()-1))){
+			numSentences++;
+		}
+		
+		List<String> onlyWords = new ArrayList<>();
+		for(String list : tokens) {
+			if(isWord(list)) {
+				onlyWords.add(list);
+			}
+		}
+		
+		for(String list : onlyWords) {
+			numSyllables += countSyllables(list);
+		}
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.  isWord defined above will also help.
 	}
@@ -73,7 +99,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
 		//TODO: write this method.  Hint: It's simple
-		return 0;
+		return numSentences;
 	}
 
 	
@@ -94,7 +120,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+	    return numWords;
 	}
 
 
@@ -116,7 +142,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSyllables;
 	}
 	
 	// Can be used for testing

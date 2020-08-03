@@ -154,8 +154,9 @@ public abstract class Document {
 	    // TODO: You will play with this method in week 1, and 
 		// then implement it in week 2
 		double fleschScore = -1;
-		fleschScore = 206.835 - 1.015*((double)new BasicDocument(text).getNumWords()/new BasicDocument(text).getNumSentences())-84.6*((double)new BasicDocument(text).getNumSyllables()/new BasicDocument(text).getNumWords());
-		//fleschScore = new BasicDocument(text).getNumWords();
+		//fleschScore = 206.835 - 1.015*((double)new BasicDocument(text).getNumWords()/new BasicDocument(text).getNumSentences())-84.6*((double)new BasicDocument(text).getNumSyllables()/new BasicDocument(text).getNumWords());
+		fleschScore = 206.835 - 1.015*((double)getNumWords()/getNumSentences())-84.6*((double)getNumSyllables()/getNumWords());
+
 		
 	    return fleschScore;
 	}
