@@ -1,5 +1,7 @@
 package textgen;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -32,15 +34,70 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	@Override
 	public void train(String sourceText)
 	{
-		// TODO: Implement this method
+		//단어 단위로 담을 리스트
+		String[] sepWords = sourceText.split("\\s+");
+		//첫 단어를 starter로 지정
+		starter = sepWords[0];
+		//preWord를 지정
+		String preWord = starter;
+		//w에 쓸 list 만들기
+		List<String> sepWords2 = new ArrayList<String>();
+		for(int i=1; i<sepWords.length; i++) {
+			sepWords2.add(sepWords[i]);
+		}
+		
+		//w는 첫 단어 이후의 모든 단어
+		for(String w : sepWords2) {
+			//node들의 word를 저장하는 list
+			List<String> temp = new ArrayList<String>();
+			for(ListNode node : wordList) {
+				//노드가 있는 경우
+				if(node.getWord().equals(preWord)) {
+					node.addNextWord(w);
+				}
+				temp.add(node.getWord());
+			}
+			//노드가 없는 경우
+			if(temp.indexOf(starter)==-1) {
+				ListNode newNode = new ListNode(preWord);
+				newNode.addNextWord(w);
+				wordList.add(newNode);
+			}
+			preWord = w;
+			starter = w;
+		}
+		
+		//마지막 단어 추가 메소드
+		String lastWord = sepWords2.get(sepWords2.size()-1);
+		List<String> temp = new ArrayList<String>();
+		for(ListNode node : wordList) {
+			temp.add(node.getWord());
+		}
+		//노드가 없는 경우
+		if(temp.indexOf(starter)==-1) {
+			ListNode newNode = new ListNode(lastWord);
+			wordList.add(newNode);
+		}
+		
+		//starter을 lastword의 next로 만들기
+		for(ListNode node : wordList) {
+			if(node.getWord().equals(sepWords[sepWords.length-1])) {
+				node.addNextWord(sepWords[0]);
+			}
+		}
+		//starter 초기화
+		starter = sepWords[0];
 	}
 	
 	/** 
 	 * Generate the number of words requested.
 	 */
+	//numWords만큼의 문장 생성
 	@Override
 	public String generateText(int numWords) {
-	    // TODO: Implement this method
+		String currWord = starter;
+		String output = "";
+		output+=starter;
 		return null;
 	}
 	
@@ -109,6 +166,15 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 		gen.retrain(textString2);
 		System.out.println(gen);
 		System.out.println(gen.generateText(20));
+		
+		MarkovTextGeneratorLoL gen2 = new MarkovTextGeneratorLoL(new Random(42));
+		String textString3 = "hi there hi Leo";
+		System.out.println(textString3);
+		gen2.train(textString3);
+		for(ListNode temp : gen2.wordList) {
+			System.out.println(temp.toString());
+		}
+		
 	}
 
 }
@@ -139,12 +205,14 @@ class ListNode
 		nextWords.add(nextWord);
 	}
 	
+	//노드의 다음 값 중 랜덤한 문자를 반환
 	public String getRandomNextWord(Random generator)
 	{
-		// TODO: Implement this method
-	    // The random number generator should be passed from 
-	    // the MarkovTextGeneratorLoL class
-	    return null;
+		String nextWord = null;
+		int ranNum = generator.nextInt(nextWords.size()-1);
+		nextWord = nextWords.get(ranNum);
+		
+	    return nextWord;
 	}
 
 	public String toString()
