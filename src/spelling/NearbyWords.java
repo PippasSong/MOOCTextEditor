@@ -75,8 +75,35 @@ public class NearbyWords implements SpellingSuggest {
 	 * @param wordsOnly controls whether to return only words or any String
 	 * @return
 	 */
+	//s에 알파벳을 집어넣어 단어가 되는것만 리스트에 넣는다
 	public void insertions(String s, List<String> currentList, boolean wordsOnly ) {
-		// TODO: Implement this method  
+		for(int index = 0; index < s.length(); index++){
+			//맨 마지막 공간을 제외하고 한 글자씩 집어넣기
+			for(int charCode = (int)'a'; charCode <= (int)'z'; charCode++) {
+				StringBuffer sb = new StringBuffer(s);
+				sb.insert(index, (char)charCode);
+				
+				//리스트에 없고 원래 단어가(s)가 아니고 사전에 있는 단어이면 리스트에 추가
+				if(!currentList.contains(sb.toString()) && 
+						(!wordsOnly||dict.isWord(sb.toString())) &&
+						!s.equals(sb.toString())) {
+					currentList.add(sb.toString());
+				}
+			}
+		}
+		//맨 마지막 공간에 추가
+		for(int charCode = (int)'a'; charCode <= (int)'z'; charCode++) {
+			StringBuffer sb = new StringBuffer(s);
+			sb.append((char)charCode);
+			
+			//리스트에 없고 원래 단어가(s)가 아니고 사전에 있는 단어이면 리스트에 추가
+			if(!currentList.contains(sb.toString()) && 
+					(!wordsOnly||dict.isWord(sb.toString())) &&
+					!s.equals(sb.toString())) {
+				currentList.add(sb.toString());
+			}
+		}
+		
 	}
 
 	/** Add to the currentList Strings that are one character deletion away
@@ -86,8 +113,20 @@ public class NearbyWords implements SpellingSuggest {
 	 * @param wordsOnly controls whether to return only words or any String
 	 * @return
 	 */
+	//한 글자씩 삭제해서 단어인 경우 리스트에 포함
 	public void deletions(String s, List<String> currentList, boolean wordsOnly ) {
-		// TODO: Implement this method
+		//한 글자씩 삭제
+		for(int index = 0; index < s.length(); index++){
+			StringBuffer sb = new StringBuffer(s);
+			sb.deleteCharAt(index);
+
+			//리스트에 없고 원래 단어가(s)가 아니고 사전에 있는 단어이면 리스트에 추가
+			if(!currentList.contains(sb.toString()) && 
+					(!wordsOnly||dict.isWord(sb.toString())) &&
+					!s.equals(sb.toString())) {
+				currentList.add(sb.toString());
+			}
+		}
 	}
 
 	/** Add to the currentList Strings that are one character deletion away
@@ -117,7 +156,6 @@ public class NearbyWords implements SpellingSuggest {
 	}	
 
    public static void main(String[] args) {
-	   /* basic testing code to get started
 	   String word = "i";
 	   // Pass NearbyWords any Dictionary implementation you prefer
 	   Dictionary d = new DictionaryHashSet();
@@ -131,7 +169,6 @@ public class NearbyWords implements SpellingSuggest {
 	   List<String> suggest = w.suggestions(word, 10);
 	   System.out.println("Spelling Suggestions for \""+word+"\" are:");
 	   System.out.println(suggest);
-	   */
    }
 
 }
