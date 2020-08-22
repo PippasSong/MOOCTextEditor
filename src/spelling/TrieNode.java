@@ -81,6 +81,12 @@ class TrieNode {
 	{
 		return children.keySet();
 	}
+	
+	//노드의 자식노드를 배열로 반환
+	public HashMap<Character, TrieNode> getCildren() {
+				
+		return children;
+	}
 
 }
 

@@ -5,6 +5,8 @@ package spelling;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -89,14 +91,16 @@ public class AutoCompleteDictionaryTrieTester {
 	public void testAddWord()
 	{
 		
-		
+		smallDict.printTree();
 		assertEquals("Asserting hellow is not in empty dict", false, emptyDict.isWord("hellow"));
 		assertEquals("Asserting hellow is not in small dict", false, smallDict.isWord("hellow"));
 		assertEquals("Asserting hellow is not in large dict", false, largeDict.isWord("hellow"));
 		
+		
 		emptyDict.addWord("hellow");
 		smallDict.addWord("hellow");
 		largeDict.addWord("hellow");
+		emptyDict.printTree();
 
 		assertEquals("Asserting hellow is in empty dict", true, emptyDict.isWord("hellow"));
 		assertEquals("Asserting hellow is in small dict", true, smallDict.isWord("hellow"));
@@ -132,11 +136,17 @@ public class AutoCompleteDictionaryTrieTester {
 	@Test
 	public void testPredictCompletions()
 	{
+		List<String> test = Arrays.asList("a", "help", "he"); 
+		List<String> test1 = AutoCompleteDictionaryTrie.sort(test, 2);
+		System.out.println(test1);
+		
+		
 		List<String> completions;
 		completions = smallDict.predictCompletions("", 0);
 		assertEquals(0, completions.size());
 		
 		completions = smallDict.predictCompletions("",  4);
+		System.out.println(completions);
 		assertEquals(4, completions.size());
 		assertTrue(completions.contains("a"));
 		assertTrue(completions.contains("he"));
